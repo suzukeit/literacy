@@ -1,0 +1,185 @@
+kadai1main.php
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset=UTF-8">
+<title>じゃんけんポン</title>
+</head>
+<body>
+<h1>第11週 Webサイト構築（2）</h1>
+<h3>課題１（１）</h3>
+<?php
+//勝った回数の管理
+if(isset(【①$_GET】['win'])){
+   $win = 【①】['win'];
+   } else {
+   $win = 0;
+   }
+//負けた回数の管理
+if(isset(【①】['lose'])){
+   $lose = 【①】['lose'];
+   } else {
+   $lose = 0;
+   }
+//あいこの回数の管理
+if(isset(【①】['aiko'])){
+   $aiko = 【①】['aiko'];
+   } else {
+   $aiko = 0;
+   }
+?>
+
+<form action="【②kadai1sub1】.php" method="【③get】">
+<p style="【④color: red】;">じゃんけん</p>
+<p>
+<input type="【⑤radio】" name="janken" value="0">グー　
+<input type="【⑤】" name="janken" value="1">チョキ　
+<input type="【⑤】" name="janken" value="2">パー
+</p>
+<input type="【⑥submit】" value="ぽん">
+<input type="【⑦hidden】" value=<?php echo $win; ?>  name="win">
+<input type="【⑦】" value=<?php echo $lose; ?> name="lose">
+<input type="【⑦】" value=<?php echo $aiko; ?> name="aiko">
+</form>
+<br>
+<hr>
+<hr>
+<h3>課題１（２）</h3>
+<form action="【⑧kadaisub2.php】" method="【⑨get】">
+<p style="【④】;">inputタグの様々な機能</p>
+<p>複数選択可 ⇒ 
+<input type="【⑩checkbox】" name="Jump" value="Jump">Jump
+<input type="【⑩】" name="Go" value="Go">Go
+<input type="【⑩】" name="Warp" value="Warp">Warp
+</p>
+<p>色指定 ⇒ 
+<input type="【⑪color】" name="color" value="#ff0000">
+</p>
+<p>日付指定 ⇒ 
+<input type="【⑫date】" name="date">
+</p>
+<p>パスワード指定 ⇒ 
+<input type="【⑬password】" name="password">
+</p>
+<input type="【⑭submit】" value="【⑮データ送信】">
+</form>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>勝負の結果は？</title>
+</head>
+<body>
+<h1>第11週 Webサイト構築（2）</h1>
+<h3>課題１（１）</h3>
+<?php
+//ユーザが入力した数値（0,1,2）を文字列「グー，チョキ，パー」に変換するための関数
+function hyouji($arg){
+  if ($arg == 0){
+	  $str = "グー";
+  } elseif ($arg == 1){
+	  $str = "チョキ";
+  } else {
+	  $str = "パー";
+  }
+  return $str;
+}
+
+$user = @$_POST['janken'];
+$com  = rand(0, 2);       //コンピュータの手（0,1,2）を乱数で決める
+
+$win  = @$_POST['win'];     //勝った回数
+$lose = @$_POST['lose'];    //負けた回数
+$aiko = @$_POST['aiko'];    //あいこだった回数
+
+//勝ち負けを判定する
+if ($user == $com){
+       $result = "あいこ";
+       $aiko++;
+} elseif ($com == ($user+1) % 3) {
+       $result = "ユーザの勝ち";
+       $win++;
+} else {
+       $result = "コンピュータの勝ち";
+       $lose++;
+}
+echo "ユーザは<span style='color:red;'>";
+echo hyouji($user);
+echo "</span>で，コンピュータは<span style='color:red;'>";
+echo hyouji($com);
+echo "</span><BR>";
+echo "したがって，$result";
+echo "<BR><BR>結果，<span style='color:red;'>".$win."</span>勝 <span style='color:red;'>"; 
+echo $lose."</span>敗 <span style='color:red;'>".$aiko."</span>分け";
+?>
+<br><br>
+<form action="kadai1main.php" method="GET">
+<input type="submit" value="もう一度やる？">
+<input type="hidden" value="<?php echo $win; ?>"  name="win">
+<input type="hidden" value="<?php echo $lose; ?>" name="lose">
+<input type="hidden" value="<?php echo $aiko; ?>" name="aiko">
+</form>
+<br>
+<form action="kadai1main.php" method="GET">
+<input type="submit" value="はじめから？">
+<input type="hidden" value="0" name="win">
+<input type="hidden" value="0" name="lose">
+<input type="hidden" value="0" name="aiko">
+</form>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>inputタグの活用</title>
+</head>
+<body>
+<h1>第11週 Webサイト構築（2）</h1>
+<h3>課題１（２）</h3>
+<?php
+//チェックボックスの選択状況
+if(isset($_GET['Jump'])){
+   echo "<div style='color:red;'>Jumpが選ばれた！</div>";
+   } else {
+   echo "<div style='color:blue;'>Jumpは選ばれなかった！</div>";
+   }
+if(isset($_GET['Go'])){
+   echo "<div style='color:red;'>Goが選ばれた！</div>";
+   } else {
+   echo "<div style='color:blue;'>Goは選ばれなかった！</div>";
+   }
+if(isset($_GET['Warp'])){
+   echo "<div style='color:red;'>Warpが選ばれた！</div>";
+   } else {
+   echo "<div style='color:blue;'>Warpは選ばれなかった！</div>";
+   }
+if(isset($_GET['color'])){
+   echo '<p>色は「<span style="color:#' . $_GET['color'] . ';">' . $_GET['color'] . "</span>」（16進数表記）が選ばれた！</p>";
+   }
+if(isset($_GET['date'])){
+   if ($_GET['date'] !== ""){
+       echo '<p>入力された日付は「<span style="font-weight:bold">' . $_GET['date'] . "</span>」です！</p>";
+   } else {
+	   echo '<p>日付は<span style="font-weight:bold">未入力</span>です．</p>';
+   }
+}
+if(isset($_GET['password'])){
+   if ($_GET['password'] !== ""){
+	   echo '<p>入力されたパスワードは「<span style="font-weight:bold">' . $_GET['password'] . "</span>」です！</p>";
+   } else {
+	   echo '<p>パスワードは<span style="font-weight:bold">未入力</span>です．</p>';
+   }
+}
+
+?>
+<br>
+<form action="kadai1main.php" method="GET">
+<input type="submit" value="戻る">
+</form>
+<br>
+</body>
+</html>
